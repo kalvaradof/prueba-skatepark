@@ -1,0 +1,87 @@
+<body>
+  <h1>Skate Park</h1>
+
+  <div class="py-4">
+    <h2>Lista de participantes</h2>
+
+    <hr />
+
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Foto <input id ="foto"> </th>
+          <th scope="col">Nombre <input id ="nombre"></th>
+          <th scope="col">Años de experiencia <input id ="anios_experiencia"></th>
+          <th scope="col">Especialidad <input id ="especialidad"></th>
+          <th scope="col">Estado <input id ="estado"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{id}}</th>
+          <td>
+            <div></div>
+          </td>
+          <td>{{nombre}}</td>
+          <td>{{anios_experiencia}}</td>
+          <td>{{especialidad}}</td>
+          <td class="text-success font-weight-bold">{{estado}}</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>
+            <div></div>
+          </td>
+          <td>Evelien Bouilliart</td>
+          <td>10</td>
+          <td>Heelflip</td>
+          <td class="text-success font-weight-bold">Aprobado</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>
+            <div></div>
+          </td>
+          <td>Danny Way</td>
+          <td>8</td>
+          <td>Ollie</td>
+          <td class="text-warning font-weight-bold">En revisión</td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="#">Iniciar Sesión</a> |
+    <a href="#">Registrarme</a>
+  </div>
+</body>
+
+<!--La vista correspondiente a la ruta raíz debe mostrar todos los participantes
+// registrados y su estado de revisión, ¿unir con registro handlebars?-->
+<script>
+  ('button') click(async () => {
+    const email = $('#email').val()
+    const foto = $('#foto').val()
+    const nombre = $('#nombre').val()
+    const anios_experiencia = $('#anios_experiencia').val()
+    const especialidad = $('#especialidad').val()
+    const estado = $('#estado').val()
+
+    const payload = { email, foto, nombre, anios_experiencia, especialidad, estado }
+
+    try {
+      await axios.post('/usuarios', payload)
+      alert("Usuario registrado con exito")
+
+      window.location.href = "/login"
+    }
+    catch ({ response }) {
+      const { data } = response
+      const { error } = data
+      alert(error)
+
+    }
+  })
+
+</script>
+
+</html>

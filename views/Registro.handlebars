@@ -1,0 +1,63 @@
+<body>
+  <h1>Skate Park</h1>
+
+  <div class="py-4">
+    <h2>Registro</h2>
+    <hr class="w-50" />
+
+    <form>
+      <div class="form-group row w-50 m-auto">
+        <div class="form-group col-12 col-sm-6">
+          <label>Email</label>
+          <input id= {{email}} class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label>Nombre</label>
+          <input id= {{ nombre }} class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label>Password</label>
+          <input id= {{ password }} class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label>Repita la password</label>
+          <input  id= {{ password_2 }}class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label>Años de experiencia</label>
+          <input id= {{ anios_experiencia }} class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label>Especialidad</label>
+          <input id= {{ especialidad }} class="form-control m-auto" />
+        </div>
+        <div class="form-group col-12 col-sm-12">
+          <label>Foto de perfil</label>
+          <input id= {{ foto }} type="file" />
+        </div>
+      </div>
+      <button onclick= "registro()" class="btn btn-info mb-3">Registrarme</button>
+      <p><a href="#"> Iniciar sesión</a></p>
+    </form>
+  </div>
+</body>
+<script>
+ 
+  const registro = async () => {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    const payload = { email, nombre, password, password_2, anios_experiencia, especialidad, foto }
+    try {
+      const { data: token } = await axios.post('/verify', payload)
+      alert(`Skater registrado correctamente!`)
+      window.location.href = `/datos?token=${token}`
+    } catch ({ response }) {
+      const { data } = response
+      const { error } = data
+      alert(error)
+    }
+  }
+
+</script>
+
+</html>
