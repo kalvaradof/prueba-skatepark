@@ -52,8 +52,16 @@ app.engine(
 app.set("view engine", "handlebars");// disponer plantillas
 
 // Ruta raíz
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res) => {
+    try {
+        const usuarios = await consultarUsuarios()
+        res.render('index', { usuarios })
+    } catch (e) {
+        res.status(500).send({
+            error: `Algo salió mal... ${e}`,
+            code: 500
+        })
+    }
 })
 
 // Ruta POST /usuario
@@ -118,8 +126,8 @@ app.post('/verify', async (req, res) => {
         })
     } else {
 
-        if (user.length != 0) {
-            if (user[0].estado === true) {
+        if (user) {//es null o objeto
+            if (user.estado === true) {
                 const token = jwt.sign(
                     {
                         exp: Math.floor(Date.now() / 1000) + 180,

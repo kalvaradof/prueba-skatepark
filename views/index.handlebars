@@ -10,44 +10,26 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Foto <input id ="foto"> </th>
-          <th scope="col">Nombre <input id ="nombre"></th>
-          <th scope="col">Años de experiencia <input id ="anios_experiencia"></th>
-          <th scope="col">Especialidad <input id ="especialidad"></th>
-          <th scope="col">Estado <input id ="estado"></th>
+          <th scope="col">Foto <input id="foto"> </th>
+          <th scope="col">Nombre <input id="nombre"></th>
+          <th scope="col">Años de experiencia <input id="anios_experiencia"></th>
+          <th scope="col">Especialidad <input id="especialidad"></th>
+          <th scope="col">Estado <input id="estado"></th>
         </tr>
       </thead>
       <tbody>
+        {{#each usuarios}}
         <tr>
-          <th scope="row">{{id}}</th>
-          <td>
-            <div></div>
+          <td>{{@index}}</td>
+          <td><img src='/imgs/{{this.foto}}' style='width:100px;'></td>
+          <td>{{this.nombre}}</td>
+          <td>{{this.anios_experiencia}}</td>
+          <td>{{this.especialidad}}</td>
+          <td>{{#if this.estado}} aprobado {{/if}} {{#else}} en revision {{/else}}  </td>
           </td>
-          <td>{{nombre}}</td>
-          <td>{{anios_experiencia}}</td>
-          <td>{{especialidad}}</td>
-          <td class="text-success font-weight-bold">{{estado}}</td>
         </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>
-            <div></div>
-          </td>
-          <td>Evelien Bouilliart</td>
-          <td>10</td>
-          <td>Heelflip</td>
-          <td class="text-success font-weight-bold">Aprobado</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>
-            <div></div>
-          </td>
-          <td>Danny Way</td>
-          <td>8</td>
-          <td>Ollie</td>
-          <td class="text-warning font-weight-bold">En revisión</td>
-        </tr>
+
+        {{/each}}
       </tbody>
     </table>
     <a href="/Login">Iniciar Sesión</a> |

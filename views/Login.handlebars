@@ -9,14 +9,14 @@
       <div class="form-group">
         <div class="form-group">
           <label>Email</label>
-          <input class="form-control w-50 m-auto" id="email" />
+          <input class="form-control w-50 m-auto" id="email" type="email" />
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input class="form-control w-50 m-auto" id="password" />
+          <input class="form-control w-50 m-auto" id="password" type="password"/>
         </div>
       </div>
-      <button onclick= "verificacion()" class="btn btn-success mb-3">Ingresar</button>
+      <button onclick= "verificacion(event)" class="btn btn-success mb-3">Ingresar</button>
       <p>¿Aún no tienes cuenta? <a href="#">Regístrate</a></p>
     </form>
   </div>
@@ -24,14 +24,15 @@
 <!--Se debe crear una vista para que los participantes puedan iniciar sesión con su correo y contraseña, CORRECTO-->
 
 <script>
-  const verificacion = async () => {
+  const verificacion = async (event) => {
+    event.preventDefault()
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
     const payload = { email, password }
     try {
       const { data: token } = await axios.post('/verify', payload)
       alert(`Autenticación y autorizacion exitosa!`)
-      window.location.href = `/datos?token=${token}`
+      window.location.href = `/Admin?token=${token}`
     } catch ({ response }) {
       const { data } = response
       const { error } = data
