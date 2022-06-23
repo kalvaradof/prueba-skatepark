@@ -51,14 +51,17 @@
     const password_2 = document.getElementById('password_2').value
     const aniosExperiencia = document.getElementById('anios_experiencia').value
     const especialidad = document.getElementById('especialidad').value
-    const foto = document.getElementById('foto').value
+    const foto = document.getElementById('foto')
 
-    const payload = new FormData()
-    payload.append("email" email, "nombre", nombre, "password", password, "aniosExperiencia", aniosExperiencia, "especialidad", especialidad)
-    const getFoto = document.querySelector('#foto');
-    getFoto.append("foto", fotofile.files[0]);
+    const payload = new FormData() //esto e slo q va a req.body
+    payload.append("email", email)
+    payload.append("nombre", nombre)
+    payload.append("password", password)
+    payload.append("anios_experiencia", aniosExperiencia)
+    payload.append("especialidad", especialidad)
+    payload.append("foto", foto.files[0]);//sacar el value
     try {
-      const response = await axios.post('/usuarios', payload, getFoto, {
+      const response = await axios.post('/usuarios', payload, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

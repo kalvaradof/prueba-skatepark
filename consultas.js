@@ -1,24 +1,23 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    user:'postgres',
-    host:'localhost',
-    port:5501,
-    password:'holahola',
-    database:'skatepark',
+    user: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    password: 'holahola',
+    database: 'skatepark',
 })
 
 // El sistema debe permitir registrar nuevos participantes.
 // Función asincrónica para ingresar un usuario
-async function nuevoUsuario(email,nombre,password,anios_experiencia,especialidad,foto) {
+async function nuevoUsuario(email, nombre, password, anios_experiencia, especialidad, foto) {
     try {
-        const result = await pool.query(
-            `INSERT INTO skaters 
-            (email,nombre,password,anios_experiencia,especialidad,foto,estado)
-            VALUES ('${email}','${nombre}','${password}','${anios_experiencia}','${especialidad}','${foto}',false)
-            RETURNING *`
-        );
-        const usuario= result.rows[0]
+        const query = {
+            text: 'INSERT INTO skaters (email, nombre, password, anios_experiencia, especialidad, foto, estado) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            values: [email, nombre, password, anios_experiencia, especialidad, foto, false]
+        }
+        const result = await pool.query(query);
+        const usuario = result.rows[0]
         return usuario
     } catch (e) {
         console.log(e);
@@ -36,8 +35,8 @@ async function consultarUsuarios() {
 }
 
 // Función asincrónica para cambiar el estado de un usuario
-async function cambioEstadoUsuario(id,estado) {
-    const result =  await pool.query(
+async function cambioEstadoUsuario(id, estado) {
+    const result = await pool.query(
         `UPDATE skaters SET estado = ${estado} WHERE id = ${id} RETURNING *`
     )
 
@@ -46,7 +45,7 @@ async function cambioEstadoUsuario(id,estado) {
 }
 
 // Función asincrónica para solicitar email y password de usuario
-async function inicioSesion(email,password) {
+async function inicioSesion(email, password) {
     try {
         const result = await pool.query(`SELECT * FROM skaters 
                                         WHERE email = '${email}' AND
@@ -59,8 +58,8 @@ async function inicioSesion(email,password) {
 
 
 // Función asincrónica para editar datos de usuario
-async function actualizarDatosUsuario(email,nombre,password,anios,especialidad) {
-    const result =  await pool.query(
+async function actualizarDatosUsuario(email, nombre, password, anios, especialidad) {
+    const result = await pool.query(
         `UPDATE skaters SET 
             nombre = '${nombre}',
             password = '${password}',
@@ -74,7 +73,7 @@ async function actualizarDatosUsuario(email,nombre,password,anios,especialidad) 
 }
 
 // Función asincrónica para eliminar cuenta
-async function eliminarCuenta (email) {
+async function eliminarCuenta(email) {
     const result = await pool.query(`
         DELETE FROM skaters WHERE email = '${email}'
     `);
@@ -82,10 +81,11 @@ async function eliminarCuenta (email) {
     return result.rowCount;
 }
 
-module.exports = { 
+module.exports = {
     consultarUsuarios,
     nuevoUsuario,
     cambioEstadoUsuario,
     inicioSesion,
     actualizarDatosUsuario,
-    eliminarCuenta };
+    eliminarCuenta
+};

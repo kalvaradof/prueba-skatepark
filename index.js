@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 
 // Ruta POST /usuario
 app.post('/usuarios', async (req, res) => {
-    console.log(req.files.foto.name)
+    //console.log(req.files, req.body)
     const foto = req.files.foto.name
     const { email, nombre, password, anios_experiencia, especialidad } = req.body;
     try {
