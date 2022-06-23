@@ -10,12 +10,12 @@ const pool = new Pool({
 
 // El sistema debe permitir registrar nuevos participantes.
 // Función asincrónica para ingresar un usuario
-async function nuevoUsuario(email,nombre,password,anios,especialidad,foto) {
+async function nuevoUsuario(email,nombre,password,anios_experiencia,especialidad,foto) {
     try {
         const result = await pool.query(
             `INSERT INTO skaters 
             (email,nombre,password,anios_experiencia,especialidad,foto,estado)
-            VALUES ('${email}','${nombre}','${password}','${anios}','${especialidad}','${foto}',false)
+            VALUES ('${email}','${nombre}','${password}','${anios_experiencia}','${especialidad}','${foto}',false)
             RETURNING *`
         );
         const usuario= result.rows[0]

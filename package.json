@@ -19,6 +19,5 @@
     "nodemailer": "^6.7.5",
     "pg": "^8.7.3"
   },
-  "devDependencies": {},
   "description": ""
 }

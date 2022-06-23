@@ -39,11 +39,12 @@ app.use(expressFileUpload({ // Middleware para express-fileupload
 )
 //disponer el style
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"))
+app.use("/axios", express.static(__dirname + "/node_modules/axios/dist"))
 
 // 2. Servir contenido dinámico con express-handlebars
 app.engine(
     "handlebars",
-    exphbs({
+    exphbs.engine({ //agregar el .engine por error de version
         defaultLayout: "main",
         layoutsDir: `${__dirname}/views/mainLayout`,
     })
@@ -59,9 +60,9 @@ app.get('/', (req, res) => {
 app.post('/usuarios', async (req, res) => {
     console.log(req.files.foto.name)
     const foto = req.files.foto.name
-    const { email, nombre, password, anios, especialidad } = req.body;
+    const { email, nombre, password, anios_experiencia, especialidad } = req.body;
     try {
-        const respuesta = await nuevoUsuario(email, nombre, password, anios, especialidad, foto);
+        const respuesta = await nuevoUsuario(email, nombre, password, anios_experiencia, especialidad, foto);
         await req.files.foto.mv(__dirname + "/public/imgs/" + foto)
         res.status(201).send(respuesta);
     } catch (e) {

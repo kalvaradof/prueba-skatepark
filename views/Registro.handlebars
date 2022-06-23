@@ -9,48 +9,62 @@
       <div class="form-group row w-50 m-auto">
         <div class="form-group col-12 col-sm-6">
           <label>Email</label>
-          <input id= {{email}} class="form-control m-auto" />
+          <input id="email" name="email" class="form-control m-auto" />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Nombre</label>
-          <input id= {{ nombre }} class="form-control m-auto" />
+          <input id="nombre" name="nombre" class="form-control m-auto" />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Password</label>
-          <input id= {{ password }} class="form-control m-auto" />
+          <input id="password" name="password" class="form-control m-auto" type="password" />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Repita la password</label>
-          <input  id= {{ password_2 }}class="form-control m-auto" />
+          <input id="password_2" name="password_2" class="form-control m-auto" type="password" />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Años de experiencia</label>
-          <input id= {{ anios_experiencia }} class="form-control m-auto" />
+          <input id="anios_experiencia" name="anios_experiencia" class="form-control m-auto" />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Especialidad</label>
-          <input id= {{ especialidad }} class="form-control m-auto" />
+          <input id="especialidad" name="especialidad" class="form-control m-auto" />
         </div>
         <div class="form-group col-12 col-sm-12">
           <label>Foto de perfil</label>
-          <input id= {{ foto }} type="file" />
+          <input id="foto" name="foto" type="file" />
         </div>
       </div>
-      <button onclick= "registro()" class="btn btn-info mb-3">Registrarme</button>
-      <p><a href="#"> Iniciar sesión</a></p>
+      <button onclick="registro(event)" class="btn btn-info mb-3">Registrarme</button>
+      <p><a href="Login"> Iniciar sesión</a></p>
     </form>
   </div>
 </body>
 <script>
- 
-  const registro = async () => {
+
+  const registro = async (event) => {
+    event.preventDefault()
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
-    const payload = { email, nombre, password, password_2, anios_experiencia, especialidad, foto }
+    const nombre = document.getElementById('nombre').value
+    const password_2 = document.getElementById('password_2').value
+    const aniosExperiencia = document.getElementById('anios_experiencia').value
+    const especialidad = document.getElementById('especialidad').value
+    const foto = document.getElementById('foto').value
+
+    const payload = new FormData()
+    payload.append("email" email, "nombre", nombre, "password", password, "aniosExperiencia", aniosExperiencia, "especialidad", especialidad)
+    const getFoto = document.querySelector('#foto');
+    getFoto.append("foto", fotofile.files[0]);
     try {
-      const { data: token } = await axios.post('/verify', payload)
+      const response = await axios.post('/usuarios', payload, getFoto, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       alert(`Skater registrado correctamente!`)
-      window.location.href = `/datos?token=${token}`
+      window.location.href = `/Login`
     } catch ({ response }) {
       const { data } = response
       const { error } = data
